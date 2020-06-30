@@ -98,3 +98,27 @@ func Test_maxDepth(t *testing.T) {
 		})
 	}
 }
+
+func Test_levelOrder(t *testing.T) {
+	type args struct {
+		root *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		{
+			name: "get 1",
+			args: args{root: DemoNode()},
+			want: [][]int{{2}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := levelOrder(tt.args.root); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("levelOrder() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

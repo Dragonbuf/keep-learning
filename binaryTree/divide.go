@@ -10,6 +10,60 @@ import "math"
 
 */
 
+func levelOrder(root *TreeNode) [][]int {
+	if root == nil {
+		return nil
+	}
+
+	res := make([][]int, 0)
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+
+	for len(queue) > 0 {
+		list := make([]int, 0)
+		l := len(queue)
+		for i := 0; i < l; i++ {
+			node := queue[0]
+			queue = queue[1:]
+			if node.Left != nil {
+				queue = append(queue, node.Left)
+			} else {
+				queue = append(queue, node.Right)
+			}
+		}
+
+		res = append(res, list)
+	}
+
+	return res
+}
+
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	if root == p || root == q {
+		return root
+	}
+
+	left := lowestCommonAncestor(root.Left, p, q)
+	right := lowestCommonAncestor(root.Right, p, q)
+	if left != nil && right != nil {
+		return root
+	}
+
+	if left != nil {
+		return left
+	}
+
+	if right != nil {
+		return right
+	}
+
+	return nil
+}
+
 func divideAndConquerB(root *TreeNode) []int {
 	if root == nil {
 		return nil
