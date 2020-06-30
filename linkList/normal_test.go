@@ -107,3 +107,43 @@ func Test_reverseBetweenOthers(t *testing.T) {
 		})
 	}
 }
+
+func Test_mergeTwoLists(t *testing.T) {
+	type args struct {
+		l1 *LinkList
+		l2 *LinkList
+	}
+
+	l1 := &LinkList{
+		Val:  0,
+		Next: nil,
+	}
+	l2 := &LinkList{
+		Val:  1,
+		Next: nil,
+	}
+
+	l3 := &LinkList{
+		Val:  0,
+		Next: l2,
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want *LinkList
+	}{
+		{
+			"12345, m = 2, n = 4  can see 1->4->3->2->5   ",
+			args{l1, l2},
+			l3,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := mergeTwoLists(tt.args.l1, tt.args.l2); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("mergeTwoLists() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
