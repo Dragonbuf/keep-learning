@@ -208,3 +208,75 @@ func findMin2(nums []int) int {
 //假设按照升序排序的数组在预先未知的某个点上进行了旋转。
 //( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
 //搜索一个给定的目标值，如果数组中存在这个目标值，则返回它的索引，否则返回 -1 。 你可以假设数组中不存在重复的元素
+func search2(nums []int, target int) int {
+	start := 0
+	end := len(nums) - 1
+
+	for start <= end {
+		mid := start + (end-start)/2
+
+		if nums[mid] == target {
+			return mid
+		}
+
+		if nums[0] > nums[mid] {
+			if target <= nums[len(nums)-1] && target > nums[mid] {
+				start = mid + 1
+			} else {
+				end = mid - 1
+			}
+		} else {
+			if target >= nums[0] && target < nums[mid] {
+				end = mid - 1
+			} else {
+				start = mid + 1
+			}
+		}
+
+	}
+
+	return -1
+}
+
+//假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+//( 例如，数组 [0,0,1,2,2,5,6] 可能变为 [2,5,6,0,0,1,2] )。
+//编写一个函数来判断给定的目标值是否存在于数组中。若存在返回 true，否则返回 false。(包含重复元素)
+
+func search3(nums []int, target int) bool {
+	if len(nums) == 0 {
+		return false
+	}
+
+	start := 0
+	end := len(nums) - 1
+
+	for start <= end {
+		mid := start + (end-start)/2
+
+		if nums[mid] == target {
+			return true
+		}
+
+		if nums[start] == nums[mid] {
+			start++
+			continue
+		}
+
+		if nums[start] < nums[mid] {
+			if nums[start] <= target && nums[mid] > target {
+				end = mid - 1
+			} else {
+				start = mid + 1
+			}
+		} else {
+			if nums[end] >= target && nums[mid] < target {
+				start = mid + 1
+			} else {
+				end = mid - 1
+			}
+		}
+
+	}
+
+	return false
+}

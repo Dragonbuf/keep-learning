@@ -239,3 +239,99 @@ func Test_findMin2(t *testing.T) {
 		})
 	}
 }
+
+func Test_search2(t *testing.T) {
+	type args struct {
+		nums   []int
+		target int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			"can see 4",
+			args{
+				nums:   []int{4, 5, 6, 7, 0, 1, 2},
+				target: 0,
+			},
+			4,
+		},
+		{
+			"can see -1",
+			args{
+				nums:   []int{4, 5, 6, 7, 0, 1, 2},
+				target: 3,
+			},
+			-1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := search2(tt.args.nums, tt.args.target); got != tt.want {
+				t.Errorf("search2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_search3(t *testing.T) {
+	type args struct {
+		nums   []int
+		target int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		//{
+		//	"can see false",
+		//	args{
+		//		nums:   []int{},
+		//		target: 0,
+		//	},
+		//	false,
+		//},
+		//{
+		//	"can see false",
+		//	args{
+		//		nums:   []int{},
+		//		target: 0,
+		//	},
+		//	false,
+		//},
+		//{
+		//	"can see false",
+		//	args{
+		//		nums:   []int{1,1},
+		//		target: 0,
+		//	},
+		//	false,
+		//},
+		//{
+		//	"can see false",
+		//	args{
+		//		nums:   []int{3,1,1},
+		//		target: 3,
+		//	},
+		//	true,
+		//},
+		{
+			"can see false",
+			args{
+				nums:   []int{3, 5, 1},
+				target: 1,
+			},
+			true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := search3(tt.args.nums, tt.args.target); got != tt.want {
+				t.Errorf("search3() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
