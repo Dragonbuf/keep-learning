@@ -1,12 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/imroc/biu"
+)
 
 func main() {
-	s := "hello world"
-	bytes := []byte(s)
+	var a uint8
+	a = 3
+	// uint32 把最后一位取出来
+	p := uint8(7)
 
-	new := bytes[:6]
-	new = append(new, new...)
-	fmt.Println(len(bytes), string(new), s)
+	fmt.Println((a&1)<<p, biu.ToBinaryString((a & 1)), biu.ToBinaryString((a&1)<<p))
+
 }
