@@ -335,3 +335,31 @@ func Test_search3(t *testing.T) {
 		})
 	}
 }
+
+func Test_search4(t *testing.T) {
+	type args struct {
+		nums   []int
+		target int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			"can see 3",
+			args{
+				nums:   []int{3, 1, 1},
+				target: 3,
+			},
+			true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := search4(tt.args.nums, tt.args.target); got != tt.want {
+				t.Errorf("search4() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

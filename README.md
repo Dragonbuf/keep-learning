@@ -1,2 +1,8 @@
-#keep-learning
+# keep-learning
 每日写写代码练练手
+
+## 经验 
+```
+1 读题清晰
+2 确定边界
+```
