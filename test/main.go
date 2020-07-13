@@ -145,3 +145,42 @@ func climbStairs(n int) int {
 	}
 	return f[n]
 }
+
+//给定一个非负整数数组，你最初位于数组的第一个位置。
+//数组中的每个元素代表你在该位置可以跳跃的最大长度。 判断你是否能够到达最后一个位置。
+//[2,3,1,1,4]
+func canJump(nums []int) bool {
+	rightMost := 0
+	for i := 0; i < len(nums); i++ {
+		if i <= rightMost {
+			rightMost = max(nums[i]+i, rightMost)
+			if rightMost >= len(nums)-1 {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func canJump2(nums []int) int {
+	var end, maxPosition, step int
+	//在遍历数组时，我们不访问最后一个元素，这是因为在访问最后一个元素之前，我们的边界一定大于等于最后一个位置，否则就无法跳到最后一个位置了。
+	//如果访问最后一个元素，在边界正好为最后一个位置的情况下，我们会增加一次「不必要的跳跃次数」，因此我们不必访问最后一个元素。
+
+	for i := 0; i < len(nums)-1; i++ {
+		maxPosition = max(maxPosition, nums[i]+i)
+		if end == i {
+			end = maxPosition
+			step++
+		}
+	}
+	return step
+}
