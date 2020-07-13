@@ -266,6 +266,46 @@ func Test_search2(t *testing.T) {
 			},
 			-1,
 		},
+		{
+			"can see -1",
+			args{
+				nums:   []int{3, 1, 2},
+				target: 3,
+			},
+			0,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{3, 1, 1},
+				target: 3,
+			},
+			0,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{1, 1},
+				target: 0,
+			},
+			-1,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{},
+				target: 0,
+			},
+			-1,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{},
+				target: 0,
+			},
+			-1,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -286,38 +326,62 @@ func Test_search3(t *testing.T) {
 		args args
 		want bool
 	}{
-		//{
-		//	"can see false",
-		//	args{
-		//		nums:   []int{},
-		//		target: 0,
-		//	},
-		//	false,
-		//},
-		//{
-		//	"can see false",
-		//	args{
-		//		nums:   []int{},
-		//		target: 0,
-		//	},
-		//	false,
-		//},
-		//{
-		//	"can see false",
-		//	args{
-		//		nums:   []int{1,1},
-		//		target: 0,
-		//	},
-		//	false,
-		//},
-		//{
-		//	"can see false",
-		//	args{
-		//		nums:   []int{3,1,1},
-		//		target: 3,
-		//	},
-		//	true,
-		//},
+		{
+			"can see in 1 3 1 1 1 ",
+			args{
+				nums:   []int{1, 3, 1, 1, 1},
+				target: 3,
+			},
+			true,
+		},
+		{
+			"can see 4",
+			args{
+				nums:   []int{4, 5, 6, 7, 0, 1, 2},
+				target: 0,
+			},
+			true,
+		},
+		{
+			"can see -1",
+			args{
+				nums:   []int{4, 5, 6, 7, 0, 1, 2},
+				target: 3,
+			},
+			false,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{},
+				target: 0,
+			},
+			false,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{},
+				target: 0,
+			},
+			false,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{1, 1},
+				target: 0,
+			},
+			false,
+		},
+		{
+			"can see false",
+			args{
+				nums:   []int{3, 1, 1},
+				target: 3,
+			},
+			true,
+		},
 		{
 			"can see false",
 			args{
