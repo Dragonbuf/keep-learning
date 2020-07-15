@@ -184,3 +184,46 @@ func canJump2(nums []int) int {
 	}
 	return step
 }
+
+//给定一个无序的整数数组，找到其中最长上升子序列的长度。
+//[10,9,2,5,3,7,101,18]
+//[2,3,7,101]，它的长度是 4。
+func lengthOfLIS(nums []int) int {
+	// dp[i] = max(dp[i])+1
+
+	if len(nums) < 2 {
+		return len(nums)
+	}
+
+	dp := make([]int, len(nums))
+	dp[0] = 1
+
+	for i := 1; i < len(nums); i++ {
+		dp[i] = 1
+		for j := 0; j < i; j++ {
+			if nums[j] < nums[i] {
+				dp[i] = max(dp[i], dp[j]+1)
+			}
+		}
+	}
+
+	var res int
+	for _, v := range dp {
+		res = max(res, v)
+	}
+
+	return res
+}
+
+//给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
+//输入: s = "leetcode", wordDict = ["leet", "code"]
+//输出: true
+//解释: 返回 true 因为 "leetcode" 可以被拆分成 "leet code"。
+
+//输入: s = "applepenapple", wordDict = ["apple", "pen"]
+//输出: true
+//解释: 返回 true 因为 "applepenapple" 可以被拆分成 "apple pen apple"。
+//     注意你可以重复使用字典中的单词。
+
+//输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+//输出: false
