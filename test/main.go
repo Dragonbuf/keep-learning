@@ -215,6 +215,38 @@ func lengthOfLIS(nums []int) int {
 	return res
 }
 
+func minCut(s string) int {
+	// 状态 f[i] 最小 cut 次数
+	// function:   min(dp[j]+1,dp[i]) j < i && j+1,i isPalindrome
+
+	if len(s) < 2 {
+		return 0
+	}
+
+	dp := make([]int, len(s)+1)
+	dp[0] = -1
+	for i := 1; i <= len(s); i++ {
+		dp[i] = i - 1
+		for j := 0; j < i; j++ {
+			if isPalindrome(s, j, i-1) {
+				dp[i] = min(dp[j]+1, dp[i])
+			}
+		}
+	}
+	return dp[len(s)]
+}
+
+func isPalindrome(s string, left, right int) bool {
+	for left < right {
+		if s[left] != s[right] {
+			return false
+		}
+		left++
+		right--
+	}
+	return true
+}
+
 //给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
 //输入: s = "leetcode", wordDict = ["leet", "code"]
 //输出: true
@@ -227,3 +259,139 @@ func lengthOfLIS(nums []int) int {
 
 //输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 //输出: false
+
+func wordBreak(s string, wordDict []string) bool {
+	if len(wordDict) == 0 {
+		return false
+	}
+
+	wordDictMap := make(map[string]bool, len(wordDict))
+	for _, v := range wordDict {
+		wordDictMap[v] = true
+	}
+
+	dp := make([]bool, len(s)+1)
+	dp[0] = true
+
+	for i := 1; i <= len(s); i++ {
+		for j := 0; j < i; j++ {
+
+			if dp[j] && wordDictMap[s[j:i]] {
+				dp[i] = true
+				break
+			}
+		}
+	}
+	return dp[len(s)]
+}
+
+//给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列。
+//一个字符串的 子序列 是指这样一个新的字符串：
+//它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
+//例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。
+//两个字符串的「公共子序列」是这两个字符串所共同拥有的子序列。
+
+func longestCommonSubsequence(a string, b string) int {
+	dp := make([][]int, len(a)+1)
+	for i := 0; i < len(dp); i++ {
+		dp[i] = make([]int, len(b)+1)
+	}
+
+	for i := 1; i <= len(a); i++ {
+		for j := 1; j <= len(b); j++ {
+			if a[i-1] == b[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+			}
+		}
+	}
+
+	return dp[len(a)][len(b)]
+}
+
+//给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+
+func coinChange(coins []int, amount int) int {
+	dp := make([]int, amount+1)
+	for i := 0; i <= amount; i++ {
+		dp[i] = amount + 1
+	}
+	dp[0] = 0
+	for i := 1; i <= amount; i++ {
+		for j := 0; j < len(coins); j++ {
+			if i >= coins[j] {
+				dp[i] = min(dp[i], dp[i-coins[j]]+1)
+			}
+		}
+	}
+
+	if dp[amount] > amount {
+		return -1
+	}
+	return dp[amount]
+}
+
+//在 n 个物品中挑选若干物品装入背包，最多能装多满？假设背包的大小为 m，每个物品的大小为 A[i]
+//样例 1:
+//	输入:  [3,4,8,5], backpack size=10
+//	输出:  9
+//
+//样例 2:
+//	输入:  [2,3,5,7], backpack size=12
+//	输出:  12
+func backPack(m int, A []int) int {
+	dp := make([][]bool, len(A)+1)
+
+	for i := 0; i < len(dp); i++ {
+		dp[i] = make([]bool, m+1)
+	}
+
+	// todo
+	return 0
+}
+
+func backPack2(m int, A []int) int {
+	// write your code here
+	// f[i][j] 前i个物品，是否能装j
+	// f[i][j] =f[i-1][j] f[i-1][j-a[i] j>a[i]
+	// f[0][0]=true f[...][0]=true
+	// f[n][X]
+	f := make([][]bool, len(A)+1)
+	for i := 0; i <= len(A); i++ {
+		f[i] = make([]bool, m+1)
+	}
+
+	f[0][0] = true
+
+	for i := 1; i <= len(A); i++ {
+		for j := 0; j <= m; j++ {
+			f[i][j] = f[i-1][j]
+			if j-A[i-1] >= 0 && f[i-1][j-A[i-1]] {
+				f[i][j] = true
+			}
+		}
+	}
+	for i := m; i >= 0; i-- {
+		if f[len(A)][i] {
+			return i
+		}
+	}
+	return 0
+}
+
+func revertString(s []byte) string {
+	revertStringHelper(s, 0, len(s)-1)
+	return string(s)
+}
+
+func revertStringHelper(s []byte, left, right int) {
+	if left >= right {
+		return
+	}
+
+	s[left], s[right] = s[right], s[left]
+	left++
+	right--
+	revertStringHelper(s, left, right)
+}
