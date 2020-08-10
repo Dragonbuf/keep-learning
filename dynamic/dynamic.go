@@ -5,22 +5,6 @@ package dynamic
 //问你最少需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1 。算法的函数签名如下：
 
 // coins 中是可选硬币面值，amount 是目标金额
-func coinChange(coins []int, amount int) int {
-	dp := make([]int, amount+1)
-	for i := 0; i < len(dp); i++ {
-		dp[i] = amount + 1
-	}
-
-	for i := 0; i < len(dp); i++ {
-		// todo
-	}
-
-	if dp[amount] > amount {
-		return -1
-	}
-
-	return dp[amount]
-}
 
 //在 n 个物品中挑选若干物品装入背包，最多能装多满？假设背包的大小为 m，每个物品的大小为 A[i]
 //样例 1:
@@ -54,7 +38,7 @@ func backPack(m int, A []int) int {
 
 func min(a, b int) int {
 	if a > b {
-		return a
+		return b
 	}
-	return b
+	return a
 }
