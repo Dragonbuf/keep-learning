@@ -36,3 +36,7 @@
 
 ## todolist
 [最长回文字符串](https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zui-chang-hui-wen-zi-chuan-by-leetcode-solution/)
+
+```
+1 动态规划： coins v1 v2 v3  还需要在练习
+```
