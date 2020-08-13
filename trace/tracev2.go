@@ -15,6 +15,30 @@ package trace
 //返回可以使最终数组和为目标数 S 的所有添加符号的方法数。
 //输入：nums: [1, 1, 1, 1, 1], S: 3 输出：5
 
+var resFindV1 int
+
+func findTargetSumWaysV1(nums []int, target int) int {
+	var trace int
+	backTrackFindV1(nums, trace, 0, target)
+	return resFindV1
+}
+
+func backTrackFindV1(nums []int, trace int, start int, target int) {
+	if start == len(nums) {
+		if trace == target {
+			resFindV1++
+		}
+		return
+	}
+
+	chooses := []int{+1, -1}
+	for _, choose := range chooses {
+		trace += nums[start] * choose
+		backTrackFindV1(nums, trace, start+1, target)
+		trace -= nums[start] * choose
+	}
+}
+
 var resV1 [][]int
 
 // 全排列 [1,2,4]
@@ -51,28 +75,13 @@ func containsV1(nums []int, target int) bool {
 	return false
 }
 
-var resV2 [][]int
+//4 toto N 皇后问题
+var resV2 [][]string
 
-// 全排列 [1,2,4]
-func permuteV2(nums []int) [][]int {
-	var trace []int
-
-	backTrackV1(nums, trace)
-	return resV1
+func solveNQueens(n int) [][]string {
+	return nil
 }
 
-func backTrackV2(nums []int, trace []int) {
-	if len(nums) == len(trace) {
-		resV1 = append(resV1, trace)
-		return
-	}
+func backTrackV2() {
 
-	for _, v := range nums {
-		if containsV1(trace, v) {
-			continue
-		}
-		trace = append(trace, v)
-		backTrackV1(nums, trace)
-		trace = trace[:len(trace)-1]
-	}
 }
