@@ -39,6 +39,23 @@ func backTrackFindV1(nums []int, trace int, start int, target int) {
 	}
 }
 
+// 会有重复子问题,比如 start:trace  会被进行重复计算
+func backTrackFindV2(nums []int, trace int, start int, target int) {
+	if start == len(nums) {
+		if trace == target {
+			resFindV1++
+		}
+		return
+	}
+
+	chooses := []int{+1, -1}
+	for _, choose := range chooses {
+		trace += nums[start] * choose
+		backTrackFindV1(nums, trace, start+1, target)
+		trace -= nums[start] * choose
+	}
+}
+
 var resV1 [][]int
 
 // 全排列 [1,2,4]
