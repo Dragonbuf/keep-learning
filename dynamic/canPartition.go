@@ -18,8 +18,8 @@ func canPartition(nums []int) bool {
 	}
 
 	for i := 1; i <= len(nums); i++ {
-		for j := 1; i <= target; j++ {
-			if nums[i-1] > j {
+		for j := 1; j <= target; j++ {
+			if j-nums[i-1] < 0 {
 				dp[i][j] = dp[i-1][j]
 			} else {
 				dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i-1]]
