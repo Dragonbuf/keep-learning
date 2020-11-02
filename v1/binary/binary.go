@@ -84,4 +84,3 @@ func rangeBitwiseAnd(m int, n int) int {
 	}
 	return m << res
 }
-

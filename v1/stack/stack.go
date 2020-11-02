@@ -1,7 +1,7 @@
 package stack
 
 import (
-	"github.com/keep-learning/binaryTree"
+	"github.com/keep-learning/v1/binaryTree"
 	"math"
 	"strconv"
 	"strings"
@@ -18,40 +18,40 @@ func Constructor() MinStack {
 }
 
 // 必须保证 同时 push ，不然 pop 可能有问题
-func (this *MinStack) Push(x int) {
-	min := this.GetMin()
+func (s *MinStack) Push(x int) {
+	min := s.GetMin()
 	if min > x {
-		this.min = append(this.min, x)
+		s.min = append(s.min, x)
 	} else {
-		this.min = append(this.min, min)
+		s.min = append(s.min, min)
 	}
 
-	this.stack = append(this.stack, x)
+	s.stack = append(s.stack, x)
 }
 
-func (this *MinStack) Pop() {
-	if len(this.stack) < 0 {
+func (s *MinStack) Pop() {
+	if len(s.stack) < 0 {
 		return
 	}
 
-	this.stack = this.stack[:len(this.stack)-1]
-	this.min = this.min[:len(this.min)-1]
+	s.stack = s.stack[:len(s.stack)-1]
+	s.min = s.min[:len(s.min)-1]
 }
 
-func (this *MinStack) Top() int {
-	if len(this.stack) == 0 {
+func (s *MinStack) Top() int {
+	if len(s.stack) == 0 {
 		return 0
 	}
 
-	return this.stack[len(this.stack)-1]
+	return s.stack[len(s.stack)-1]
 }
 
-func (this *MinStack) GetMin() int {
-	if len(this.min) < 1 {
+func (s *MinStack) GetMin() int {
+	if len(s.min) < 1 {
 		return math.MaxInt64
 	}
 
-	return this.min[len(this.min)-1]
+	return s.min[len(s.min)-1]
 }
 
 func evalRPN(tokens []string) int {
