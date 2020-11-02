@@ -174,7 +174,6 @@ func Test_reverseBits(t *testing.T) {
 	}
 }
 
-
 func Test_rangeBitwiseAnd(t *testing.T) {
 	type args struct {
 		m int
