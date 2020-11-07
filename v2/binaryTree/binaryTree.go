@@ -1,9 +1,21 @@
 package binaryTree
 
+import (
+	"strconv"
+	"strings"
+)
+
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
 	Right *TreeNode
+}
+
+type Node struct {
+	Val   int
+	Left  *Node
+	Right *Node
+	Next  *Node
 }
 
 //二叉树的前序遍历
@@ -196,113 +208,114 @@ func isSymmetricQueue(root *TreeNode) bool {
 }
 
 //回溯问题：
+var res [][]int
 
 func hasPathSum(root *TreeNode, sum int) bool {
-
-	return true
-}
-
-/**
-class Solution {
-    LinkedList<List<Integer>> res = new LinkedList<>();
-
-    LinkedList<Integer> path = new LinkedList<>();
-
-    public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        recur(root, sum);
-        return res;
-    }
-
-    void recur(TreeNode root, int tar) {
-        if(root == null) return;
-        path.add(root.val);
-        tar -= root.val;
-        if(tar == 0 && root.left == null && root.right == null)
-            res.add(new LinkedList(path));
-
-
-        recur(root.left, tar);
-        recur(root.right, tar);
-
-
-        path.removeLast();
-    }
-}
-
-/**
-func pathSum(root *TreeNode, sum int) [][]int {
-    if root == nil {
-        return nil
-    }
-    var ret [][]int
-    dfs(root,sum,[]int{},&ret)
-    return ret
-}
-
-func dfs(root *TreeNode,sum int,arr []int,ret *[][]int){
-    if root == nil{
-        return
-    }
-    arr = append(arr,root.Val)
-
-    if root.Val == sum && root.Left == nil && root.Right == nil {
-        //slice是一个指向底层的数组的指针结构体
-        //因为是先序遍历，如果 root.Right != nil ,arr 切片底层的数组会被修改
-        //所以这里需要 copy arr 到 tmp，再添加进 ret，防止 arr 底层数据修改带来的错误
-        tmp := make([]int,len(arr))
-        copy(tmp,arr)
-        *ret = append(*ret,tmp)
-    }
-
-    dfs(root.Left,sum - root.Val,arr,ret)
-    dfs(root.Right,sum - root.Val,arr,ret)
-
-    arr = arr[:len(arr)-1]
-}
-
-*/
-
-func backTrack(root *TreeNode, current, sum int) bool {
-
 	if root == nil {
 		return false
 	}
-
-	if root.Val+current <= sum {
-		current += root.Val
-		if current == sum {
-			return true
-		}
-	}
-
-	for i := 0; i < 2; i++ {
-
-		if backTrack(root.Left, current, sum) {
-			return true
-		}
-
-		if backTrack(root.Right, current, sum) {
-			return true
-		}
-
-	}
-
-	return false
+	backTrack(root, []int{}, sum)
+	return len(res) > 0
 }
 
-/**
-了解递归并利用递归解决问题并不容易。
+func backTrack(root *TreeNode, path []int, sum int) {
 
-当遇到树问题时，请先思考一下两个问题：
+	if root == nil {
+		return
+	}
 
-你能确定一些参数，从该节点自身解决出发寻找答案吗？
-你可以使用这些参数和节点本身的值来决定什么应该是传递给它子节点的参数吗？
-如果答案都是肯定的，那么请尝试使用 “自顶向下” 的递归来解决此问题。
+	path = append(path, root.Val)
 
-或者你可以这样思考：
-对于树中的任意一个节点，如果你知道它子节点的答案，你能计算出该节点的答案吗？
-如果答案是肯定的，那么 “自底向上” 的递归可能是一个不错的解决方法。
-*/
+	if sum == root.Val && root.Left == nil && root.Right == nil {
+		var tmp []int
+		copy(tmp, path)
+		res = append(res, tmp)
+	}
+
+	backTrack(root.Left, path, sum-root.Val)
+	backTrack(root.Right, path, sum-root.Val)
+	path = path[:len(path)-1]
+}
+
+func buildTree(inorder []int, postorder []int) *TreeNode {
+
+	helper := make(map[int]int, len(inorder))
+	for i := 0; i < len(inorder); i++ {
+		helper[inorder[i]] = i
+	}
+
+	var build func(int, int) *TreeNode
+
+	build = func(left, right int) *TreeNode {
+		if left > right {
+			return nil
+		}
+
+		val := postorder[len(postorder)-1]
+		postorder = postorder[:len(postorder)-1]
+		root := &TreeNode{Val: val}
+
+		index := helper[val]
+
+		root.Right = build(index+1, right)
+		root.Left = build(left, index+1)
+		return root
+	}
+
+	return build(0, len(inorder)-1)
+}
+
+func connect(root *Node) *Node {
+	q := []*Node{root}
+
+	for len(q) > 0 {
+		// has left  has right append,
+		p := make([]*Node, 0)
+		for i := 0; i < len(q); i++ {
+			if i+1 < len(q) {
+				q[i].Next = q[i+1]
+			}
+			if q[i].Left != nil {
+				p = append(p, q[i].Left)
+			}
+
+			if q[i].Right != nil {
+				q = append(q, q[i].Right)
+			}
+		}
+		p = q
+	}
+	return root
+}
+
+func connectV2(root *Node) *Node {
+	start := root
+
+	for start != nil {
+		var nextStart, last *Node
+
+		handle := func(cur *Node) {
+			if cur == nil {
+				return
+			}
+			if nextStart == nil {
+				nextStart = cur
+			}
+			if last != nil {
+				last.Next = cur
+			}
+			last = cur
+		}
+
+		for p := start; p != nil; p = p.Next {
+			handle(p.Left)
+			handle(p.Right)
+		}
+		start = nextStart
+	}
+
+	return root
+}
 
 func Max(a, b int) int {
 	if a > b {
@@ -310,4 +323,69 @@ func Max(a, b int) int {
 	}
 
 	return b
+}
+
+/**
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || root == p || root == q) return root;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if(left == null && right == null) return null; // 1.
+        if(left == null) return right; // 3.
+        if(right == null) return left; // 4.
+        return root; // 2. if(left != null and right != null)
+    }
+}
+
+*/
+
+type Codec struct {
+	l []string
+}
+
+func Constructor() Codec {
+	return Codec{}
+}
+
+// Serializes a tree to a single string.
+func (this *Codec) serialize(root *TreeNode) string {
+	return this.rserialize(root, "")
+}
+
+func (this *Codec) rserialize(root *TreeNode, str string) string {
+	if root == nil {
+		str += "null,"
+	} else {
+		str += strconv.Itoa(root.Val) + ","
+		str = this.rserialize(root.Left, str)
+		str = this.rserialize(root.Right, str)
+	}
+	return str
+}
+
+// Deserializes your encoded data to tree.
+func (this *Codec) deserialize(data string) *TreeNode {
+	l := strings.Split(data, ",")
+	for i := 0; i < len(l); i++ {
+		if l[i] != "" {
+			this.l = append(this.l, l[i])
+		}
+	}
+	return this.rdeserialize()
+}
+
+func (this *Codec) rdeserialize() *TreeNode {
+	if this.l[0] == "null" {
+		this.l = this.l[1:]
+		return nil
+	}
+
+	val, _ := strconv.Atoi(this.l[0])
+	this.l = this.l[1:]
+
+	root := &TreeNode{Val: val}
+	root.Left = this.rdeserialize()
+	root.Right = this.rdeserialize()
+	return root
 }

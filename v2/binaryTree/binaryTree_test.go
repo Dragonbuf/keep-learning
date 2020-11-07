@@ -289,3 +289,31 @@ func Test_isSymmetricQueue(t *testing.T) {
 		})
 	}
 }
+
+func Test_hasPathSum(t *testing.T) {
+	type args struct {
+		root *TreeNode
+		sum  int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			"can see false",
+			args{
+				root: nil,
+				sum:  1,
+			},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := hasPathSum(tt.args.root, tt.args.sum); got != tt.want {
+				t.Errorf("hasPathSum() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
